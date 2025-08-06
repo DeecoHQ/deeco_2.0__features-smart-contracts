@@ -9,7 +9,8 @@ This repository contains the smart-contract architecture and implementation for 
 1. Ethereum(Ethereum Core).
 2. Base.
 3. Polygon.
-4. Binance Smart Chain
+4. Binance Smart Chain.
+5. Arbitrum.
 
 **N.B: Token support to include both native chain tokens and USDT wherever possible.**
 
