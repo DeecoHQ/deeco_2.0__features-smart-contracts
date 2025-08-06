@@ -1,17 +1,33 @@
-# Hardhat(Solidity Smart Contract) Project Helper(Hardhat Ignition).
+# Deeco 2.0.
 
-A Smart Contract(Hardhat Ignition) helper project - demonstrating Solidity smart contract development, deployment and interaction - with only the Hardhat Framework. A free gem-resource for bootstrapping/starting similar projects.
+Deeco is a onchain(blockchain) e-commerce project. In simple terms, it is a project that re-imagines and re-defines e-commerce, by introducing blockchain innovations and cryptocurrency adoption(for payments) - across multiple EVM chains.
 
-> Default live network(testnet) used on template is **Sepolia**.
+This repository contains the smart-contract architecture and implementation for the project.
 
-## Key Dependencies/Additions.
+## Supported/Token Chains.
 
-1. **prettier** and **prettier-plugin-solidity** - for code formatting.
-2. **hardhat-contract-sizer** - generate the sizes of available smart contracts, and outputs the result in console whenever the compilation and contract deployments are run. Prolly on some other commands as well.
-3. **hardhat-gas-reporter** - for gas calculation and reporting.
-4. **solidity-coverage** - for assessing the measure of test coverage on the smart contracts.
-5. **solhint** - for Solidity(smart contracts) linting.
-6. **dotenv** 😒.
+1. Ethereum(Ethereum Core).
+2. Base.
+3. Polygon.
+4. Binance Smart Chain
+
+**N.B: Token support to include both native chain tokens and USDT wherever possible.**
+
+## Setting up for local interaction and development.
+
+1. Clone the project's Github repo.
+
+```shell
+git clone https://github.com/Okpainmo/deeco-2.0__smart-contracts
+```
+
+2. Install all project dependencies.
+
+```shell
+npm install
+```
+
+3. Proceed to interact with the smart-contracts using the relevant command from the 'Important Commands' list below.
 
 ## Important commands.
 
@@ -47,7 +63,8 @@ Checks for test coverage. Ensure to add the "solidity coverage import to your ha
 
 For linting Solidity(smart contract) code with solhint(see the `lint` script inside `package.json`).
 
+## Smart Contract Architecture.
 
-
+This section details the project's plan and architecture.
 
 
