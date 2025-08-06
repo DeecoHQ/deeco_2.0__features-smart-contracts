@@ -9,9 +9,11 @@
     "solidity-coverage": "^0.8.16"
   },
   "dependencies": {
+    "@chainlink/contracts": "^1.4.0",
     "dotenv": "^17.2.1",
     "solhint": "^6.0.0"
-  },"scripts": {
+  },
+  "scripts": {
     "lint": "npx solhint contracts/**/*.sol"
   }
 }
