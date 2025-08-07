@@ -103,7 +103,7 @@ contracts
 
 ### 2. Contracts Documentations(in-progress).
 
-Contracts documentation is properly handled thanks to intensive Natspec usage, and OpenZeppelin's 'solidity-docgen' library. Follow this link to [view the general contracts documentation](https://github.com/Okpainmo/hardhat-project-helper__hardhat-ignition/tree/main/docs).
+Contracts documentation is properly handled thanks to intensive Natspec usage, and OpenZeppelin's 'solidity-docgen' library. Follow this link to [view the general contracts documentation](https://github.com/Okpainmo/deeco-2.0__smart-contracts/tree/main/docs).
 
 > The docs will keep getting updated as the project progresses. To regenerate the [up-to-date] docs at any point, simply run `npx hardhat docgen`
 
