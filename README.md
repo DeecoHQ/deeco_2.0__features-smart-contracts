@@ -1,6 +1,6 @@
 # Deeco 2.0.
 
-Deeco is a onchain(blockchain) e-commerce project. In simple terms, it is a project that re-imagines and re-defines e-commerce, by introducing blockchain innovations and cryptocurrency adoption(for payments) - across multiple EVM chains.
+Deeco is an onchain(blockchain) e-commerce project. In simple terms, it is a project that re-imagines and re-defines e-commerce, by introducing blockchain innovations and cryptocurrency adoption(for payments) - across multiple EVM chains.
 
 This repository contains the smart-contract architecture and implementation for the project. Use this link to [view the architectural modelling of the project, and the smart contract documentations](https://github.com/Okpainmo/deeco-2.0__smart-contracts?tab=readme-ov-file#smart-contract-architecture).
 
