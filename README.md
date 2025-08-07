@@ -2,7 +2,7 @@
 
 Deeco is an onchain(blockchain) e-commerce project. In simple terms, it is a project that re-imagines and re-defines e-commerce, by introducing blockchain innovations and cryptocurrency adoption(for payments) - across multiple EVM chains.
 
-This repository contains the smart-contract architecture and implementation for the project. Use this link to [view the architectural modelling of the project, and the smart contract documentations](https://github.com/Okpainmo/deeco-2.0__smart-contracts?tab=readme-ov-file#smart-contract-architecture).
+This repository contains the smart-contract architecture and implementation for the project. Use this link to [view the architectural modelling of the project, and the smart contract documentations](https://github.com/Okpainmo/deeco-2.0__smart-contracts?tab=readme-ov-file#smart-contract-architecture-and-documentation).
 
 ## Supported/Token Chains.
 
@@ -80,7 +80,7 @@ This diagram below details the project's plan and architecture.
 
 ![Screenshot](<./public/Screenshot%20(1306).png>)
 
-### 2. Contracts.
+### 2. Contracts(in-progress).
 
 ```plaintext
 contracts
@@ -101,7 +101,7 @@ contracts
 └── Core.sol
 ```
 
-### 2. Contracts Documentations.
+### 2. Contracts Documentations(in-progress).
 
 Contracts documentation is properly handled thanks to intensive Natspec usage, and OpenZeppelin's 'solidity-docgen' library. Follow this link to [view the general contracts documentation](https://github.com/Okpainmo/hardhat-project-helper__hardhat-ignition/tree/main/docs).
 
