@@ -6,7 +6,7 @@ pragma solidity >=0.8.2 <0.9.0;
 /// @notice This contract defines all the events for the project.
 /// @dev Events can be inherited and emitted by other contracts for standardized logging.
 
-contract EventsEmitter {
+contract PlatformEvents {
     /// @notice Emitted for general logging purposes.
     /// @param message A custom message describing the log.
     /// @param timestamp The timestamp when the log was emitted.
@@ -21,8 +21,9 @@ contract EventsEmitter {
     event RemovedAdmin(
         string message,
         uint256 timestamp,
-        string indexed contractName,
-        address indexed removedAdminAddress
+        string contractName,
+        address indexed removedAdminAddress,
+        address indexed removedBy
     );
 
     /// @notice Emitted when a new admin is added.
@@ -33,7 +34,19 @@ contract EventsEmitter {
     event AddedNewAdmin(
         string message,
         uint256 timestamp,
-        string indexed contractName,
-        address indexed addedAdminAddress
+        string contractName,
+        address indexed addedAdminAddress,
+        address indexed addedBy
+    );
+
+    enum ProductChoreActivityType { AddedNewProduct, UpdatedProduct, DeletedProduct }
+
+    event ProductChore(
+        string message,
+        uint256 timestamp,
+        ProductChoreActivityType indexed activity,
+        string contractName,
+        string indexed productId, // string instead of uint256 - incase of DBs like mongoDB that use string-like item ids
+        address indexed addedBy
     );
 }

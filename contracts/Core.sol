@@ -1,16 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.2 <0.9.0;
 
+import "./lib/PlatformEvents.sol";
 import "./domains/auth/Auth.sol";
 import "./domains/admin-management/AdminManagement.sol";
-import "./lib/EventsEmitter.sol";
+import "./domains/product/ProductManagement.sol";
 
 /// @title Core Contract Entry Point for Platform Functionality
 /// @author @Okpainmo(Github)
 /// @notice This contract serves as the main entry point of the platform, inheriting admin and access control features
-/// @dev Inherits from `Restricted`, `EventsEmitter`, and `AdminManagement`. Initializes the master admin on deployment.
+/// @dev Inherits from `Restricted`, `PlatformEvents`, and `AdminManagement`. Initializes the master admin on deployment.
 
-contract Core is Restricted, EventsEmitter, AdminManagement {
+contract Core is Restricted, PlatformEvents, AdminManagement, ProductManagement {
     /// @notice Stores the name of the contract instance
     string private contractName;
 
