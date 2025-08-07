@@ -2,7 +2,7 @@
 
 Deeco is a onchain(blockchain) e-commerce project. In simple terms, it is a project that re-imagines and re-defines e-commerce, by introducing blockchain innovations and cryptocurrency adoption(for payments) - across multiple EVM chains.
 
-This repository contains the smart-contract architecture and implementation for the project. Use this link to [view the planning and architectural modelling of the project](https://github.com/Okpainmo/deeco-2.0__smart-contracts?tab=readme-ov-file#smart-contract-architecture).
+This repository contains the smart-contract architecture and implementation for the project. Use this link to [view the architectural modelling of the project, and the smart contract documentations](https://github.com/Okpainmo/deeco-2.0__smart-contracts?tab=readme-ov-file#smart-contract-architecture).
 
 ## Supported/Token Chains.
 
@@ -64,8 +64,51 @@ Checks for test coverage. Ensure to add the "solidity coverage import to your ha
 
 For linting Solidity(smart contract) code with solhint(see the `lint` script inside `package.json`).
 
-## Smart Contract Architecture.
+8. `npx hardhat docgen`
 
-This section details the project's plan and architecture.
+Generates markdown documentations(using Natspec comments that has been added to the contracts) - thanks to OpenZepellin's `solidity-docgen` utility/library.
+
+## Smart Contract Architecture And Documentation.
+
+### 1. Project Structure/Architecture.
+
+The project is a carefully thought-out one. Planning commenced with chores like domain derivations, chain selection, and creating mental models(sketches) for the smart contract flows/implementations.
+
+The project is built to be highly composable, flexible, and maintainable - with all the various domains coming together inside the main(`Core.sol`) smart contract.
+
+This diagram below details the project's plan and architecture.
+
+![Screenshot](<./public/Screenshot%20(1306).png>)
+
+### 2. Contracts.
+
+```plaintext
+contracts
+│ 
+├── lib
+│   └── EventsEmitter.sol
+│   └── EthUsdConverter.sol
+│ 
+├── auth
+│   └── Auth.sol
+│   
+├── admin-management
+│   └── AdminManagement.sol
+│   
+├── product
+│    └── ProductManagement.sol
+│   
+└── Core.sol
+```
+
+### 2. Contracts Documentations.
+
+Contracts documentation is properly handled thanks to intensive Natspec usage, and OpenZeppelin's 'solidity-docgen' library. Follow this link to [view the general contracts documentation](https://github.com/Okpainmo/hardhat-project-helper__hardhat-ignition/tree/main/docs).
+
+> The docs will keep getting updated as the project progresses. To regenerate the [up-to-date] docs at any point, simply run `npx hardhat docgen`
+
+
+
+
 
 
