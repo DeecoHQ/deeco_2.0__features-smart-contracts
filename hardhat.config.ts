@@ -2,6 +2,7 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-contract-sizer";
 import "solidity-coverage";
+import "solidity-docgen";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -14,6 +15,16 @@ const coinMarketCapAPIKey = process.env.COINMARKETCAP_API_KEY;
 // console.log(privateKey);
 
 const config: HardhatUserConfig = {
+    docgen: {
+        // root: process.cwd(),
+        // sourcesDir: "contracts",
+        outputDir: "./docs",
+        pages: "single",
+        exclude: [],
+        theme: "markdown",
+        collapseNewlines: true,
+        pageExtension: ".md",
+    },
     // solidity: '0.8.8', // single version mode
     solidity: {
         compilers: [
