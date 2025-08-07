@@ -28,11 +28,11 @@ git clone https://github.com/Okpainmo/deeco-2.0__smart-contracts
 npm install
 ```
 
+3. Proceed to interact with the smart-contracts using the relevant command from the 'Important Commands' list below.
+
 ## Features/Deliverables.
 
 ...
-
-3. Proceed to interact with the smart-contracts using the relevant command from the 'Important Commands' list below.
 
 ## Important commands.
 
