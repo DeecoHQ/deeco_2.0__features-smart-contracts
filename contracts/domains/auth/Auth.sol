@@ -6,10 +6,11 @@ pragma solidity >=0.8.2 <0.9.0;
 /// @notice This contract provides admin-only access control functionality.
 /// @dev The master admin is set as an immutable address; additional admins can be added to the mapping.
 
-/// @notice Error thrown when a non-admin attempts to access a restricted function.
-error Auth__AccessDenied_AdminOnly();
 
 contract Auth {
+    /// @notice Error thrown when a non-admin attempts to access a restricted function.
+    error Auth__AccessDenied_AdminOnly();
+
     /// @notice The address of the master admin, set at deployment and immutable.
     /// @dev This variable is used for strict ownership control and cannot be changed after deployment.
     address internal immutable i_masterAdmin;
