@@ -9,11 +9,11 @@ import "./domains/product/ProductManagement.sol";
 /// @title Core Contract Entry Point for Platform Functionality
 /// @author @Okpainmo(Github)
 /// @notice This contract serves as the main entry point of the platform, inheriting admin and access control features
-/// @dev Inherits from `Restricted`, `PlatformEvents`, and `AdminManagement`. Initializes the master admin on deployment.
-
-contract Core is Restricted, PlatformEvents, AdminManagement, ProductManagement {
+/// @dev Inherits from `Auth`, `PlatformEvents`, and `AdminManagement`. Initializes the master admin on deployment.
+contract Core is Auth, PlatformEvents, AdminManagement, ProductManagement {
     /// @notice Stores the name of the contract instance
-    string private contractName;
+    /// @dev Intended to be immutable but can't be due to non-value type restriction
+    string internal contractName; // variable should be 'immutable' but error say 'Immutable variables cannot have a non-value type'.
 
     /// @notice Initializes the Core contract, setting the deployer as the master admin
     /// @dev Sets up initial admin and emits deployment log. The `i_masterAdmin` is set in the constructor body.

@@ -6,9 +6,8 @@ import "../../lib/PlatformEvents.sol";
 
 /// @title Admin Management Contract
 /// @notice Enables addition and removal of platform admins with event logging
-/// @dev Inherits access control from `Restricted` (via `Auth`) and event emitters from `EventsEmitter`
-
-contract AdminManagement is Restricted, PlatformEvents {
+/// @dev Inherits access control from `Auth` (via `Auth`) and event emitters from `EventsEmitter`
+contract AdminManagement is Auth, PlatformEvents {
     /// @notice Represents an admin record with address, who added them, and when
     struct Admin {
         address newAdminAddress;
@@ -16,19 +15,22 @@ contract AdminManagement is Restricted, PlatformEvents {
         uint256 addedAt;
     }
 
-    
     /// @notice Error thrown when attempting to add an already existing admin
     error AdminManagement__AlreadyAddedAsAdmin(Admin admin);
 
     /// @notice Error thrown when a provided user(address) is not an admin
     error AdminManagement__AddressIsNotAnAdmin();
 
-    /// @dev Stores all platform admins added so far
+    /// @notice Stores all platform admins added so far
+    /// @dev This array grows as new admins are added and shrinks as they are removed.
     Admin[] internal s_platformAdmins;
 
-    /// @dev Maps an admin address to the list of other admins they have added
+    /// @notice Maps an admin address to the list of other admins they have added
+    /// @dev Key is the admin's address, value is an array of `Admin` structs representing additions they made.
     mapping(address => Admin[]) private s_adminAddressToAdditions;
 
+    /// @notice Maps an admin's address to their `Admin` profile
+    /// @dev Allows constant-time lookup of a specific admin's full profile details.
     mapping(address => Admin) private s_adminAddressToAdminProfile;
 
     /// @notice Adds a new admin to the platform
@@ -113,7 +115,10 @@ contract AdminManagement is Restricted, PlatformEvents {
        return (s_isAdmin[_adminAddress]);
     }
 
-     function getAdminProfile(address _adminAddress) public view returns (Admin memory) {
+    /// @notice Retrieves the full admin profile for a given address
+    /// @param _adminAddress The address of the admin whose profile you want
+    /// @return An `Admin` struct containing the profile details
+    function getAdminProfile(address _adminAddress) public view returns (Admin memory) {
         if (!s_isAdmin[_adminAddress]) {
             revert AdminManagement__AddressIsNotAnAdmin();
         }

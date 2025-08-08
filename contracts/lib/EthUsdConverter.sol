@@ -17,7 +17,6 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
 /// @title ETH/USD Price Conversion Library using Chainlink Oracle
 /// @notice Provides utility functions to fetch ETH price and convert between ETH and USD
 /// @dev Uses Chainlink's AggregatorV3Interface for fetching live ETH/USD price data
-
 library EthUsdConverter {
     /// @notice Retrieves the current ETH price in USD from the Chainlink price feed
     /// @dev Returns price scaled to 18 decimal places (from Chainlink's 8 decimals)

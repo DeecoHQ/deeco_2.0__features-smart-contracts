@@ -5,7 +5,6 @@ pragma solidity >=0.8.2 <0.9.0;
 /// @author
 /// @notice This contract defines all the events for the project.
 /// @dev Events can be inherited and emitted by other contracts for standardized logging.
-
 contract PlatformEvents {
     /// @notice Emitted for general logging purposes.
     /// @param message A custom message describing the log.
@@ -18,6 +17,7 @@ contract PlatformEvents {
     /// @param timestamp The time the removal occurred.
     /// @param contractName The name of the contract emitting the event.
     /// @param removedAdminAddress The address of the admin that was removed.
+    /// @param removedBy The address of the account that performed the removal.
     event RemovedAdmin(
         string message,
         uint256 timestamp,
@@ -31,6 +31,7 @@ contract PlatformEvents {
     /// @param timestamp The time the new admin was added.
     /// @param contractName The name of the contract emitting the event.
     /// @param addedAdminAddress The address of the new admin that was added.
+    /// @param addedBy The address of the account that performed the addition.
     event AddedNewAdmin(
         string message,
         uint256 timestamp,
@@ -39,8 +40,17 @@ contract PlatformEvents {
         address indexed addedBy
     );
 
+    /// @notice Enumeration of product-related activity types.
+    /// @dev Used for categorizing `ProductChore` events.
     enum ProductChoreActivityType { AddedNewProduct, UpdatedProduct, DeletedProduct }
 
+    /// @notice Emitted when a product-related action occurs.
+    /// @param message A description of the action taken on the product.
+    /// @param timestamp The time the action occurred.
+    /// @param activity The type of product activity (add, update, delete).
+    /// @param contractName The name of the contract emitting the event.
+    /// @param productId The unique product identifier (string to support non-numeric DB IDs like MongoDB).
+    /// @param addedBy The address of the account that performed the product action.
     event ProductChore(
         string message,
         uint256 timestamp,

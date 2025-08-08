@@ -4,7 +4,17 @@ pragma solidity >=0.8.2 <0.9.0;
 import "../auth/Auth.sol";
 import "../../lib/PlatformEvents.sol";
 
-contract ProductManagement is Restricted, PlatformEvents {
+/// @title Product Management Contract
+/// @notice Handles adding, updating, deleting, and retrieving product information within the platform.
+/// @dev Inherits from Auth for admin-only access and PlatformEvents for event emission.
+contract ProductManagement is Auth, PlatformEvents {
+    /// @notice Structure to store product details.
+    /// @param id Unique identifier for the product.
+    /// @param addedBy Address of the admin who added the product.
+    /// @param addedAt Timestamp when the product was added.
+    /// @param productImageCID CID (Content Identifier) for the product image stored on IPFS.
+    /// @param productMetadataCID CID for product metadata stored on IPFS.
+    /// @param updatedAt Timestamp of the last update to the product.
     struct Product {
         string id;
         address addedBy;
@@ -14,21 +24,36 @@ contract ProductManagement is Restricted, PlatformEvents {
         uint256 updatedAt;
     }
 
+    /// @notice Error indicating that a product with the given ID already exists.
+    /// @param product The full existing product data.
     error ProductManagement__ProductAlreadyExistsWithProvidedId(Product product);
+
+    /// @notice Error indicating that no product with the given ID exists.
     error ProductManagement__ProductWithProvidedIdDoesNotExist();
+
+    /// @notice Error indicating that the provided address is not an admin.
     error ProductManagement__AddressIsNotAnAdmin();
 
+    /// @notice Array of all products available on the platform.
     Product[] private s_platformProducts;
 
+    /// @notice Mapping from admin address to the products they have added.
     mapping(address => Product[]) private s_adminAddressToProductsAdded;
 
     // will be passing the full currently existing product as error param on error: ProductAlreadyExistsWithProvidedId - see above
+    /// @notice Mapping from product ID to product details.
     mapping(string => Product) private s_productIdToProduct;
 
+    /// @notice Mapping from product ID to existence status.
     mapping(string => bool) private s_productIdToBoolean;
 
 
     // adminOnly(modifier) - from ./auth/Auth.sol
+    /// @notice Adds a new product to the platform.
+    /// @dev Only callable by an admin. Emits a ProductChore event on success.
+    /// @param _productId Unique identifier for the new product.
+    /// @param _productImageCID CID for the product image on IPFS.
+    /// @param _productMetadataCID CID for the product metadata on IPFS.
     function addProduct(string memory _productId, string memory _productImageCID, string memory _productMetadataCID) public adminOnly {
         if(s_productIdToBoolean[_productId]) {
             Product memory existingProduct = s_productIdToProduct[_productId];
@@ -63,6 +88,9 @@ contract ProductManagement is Restricted, PlatformEvents {
     }
 
     // adminOnly(modifier) - from ./auth/Auth.sol
+    /// @notice Deletes a product from the platform.
+    /// @dev Only callable by an admin. Emits a ProductChore event on success.
+    /// @param _productId Unique identifier of the product to delete.
     function deleteProduct(string memory _productId) public adminOnly{
         if(!s_productIdToBoolean[_productId]) {
             revert ProductManagement__ProductWithProvidedIdDoesNotExist();
@@ -100,6 +128,11 @@ contract ProductManagement is Restricted, PlatformEvents {
     }
 
     // adminOnly(modifier) - from ./auth/Auth.sol
+    /// @notice Updates details of an existing product.
+    /// @dev Only callable by an admin. Emits a ProductChore event on success.
+    /// @param _productId Unique identifier of the product to update.
+    /// @param _productImageCID New CID for the product image on IPFS.
+    /// @param _productMetadataCID New CID for the product metadata on IPFS.
     function updateProduct(string memory _productId, string memory _productImageCID, string memory _productMetadataCID) public adminOnly{
         if(!s_productIdToBoolean[_productId]) {
             revert ProductManagement__ProductWithProvidedIdDoesNotExist();
@@ -138,7 +171,6 @@ contract ProductManagement is Restricted, PlatformEvents {
 
         s_productIdToProduct[_productId] = updatedProduct;
 
-
         s_productIdToBoolean[_productId] = true; // seems unnecessary - leave though
 
         
@@ -146,6 +178,9 @@ contract ProductManagement is Restricted, PlatformEvents {
         emit ProductChore("product updated successfully", block.timestamp, ProductChoreActivityType.UpdatedProduct, "ProductManagement", _productId, msg.sender);
     }
 
+    /// @notice Retrieves details of a product by its ID.
+    /// @param _productId Unique identifier of the product to retrieve.
+    /// @return The Product struct containing product details.
     function getProduct(string memory _productId) public view returns (Product memory) {
         if(!s_productIdToBoolean[_productId]) {
             revert ProductManagement__ProductWithProvidedIdDoesNotExist();
@@ -156,6 +191,9 @@ contract ProductManagement is Restricted, PlatformEvents {
         return product;
     }
 
+    /// @notice Retrieves all products added by a specific admin.
+    /// @param _adminAddress Address of the admin.
+    /// @return Array of Product structs added by the given admin.
     function getProductsAddedByAdmin(address _adminAddress) public view returns(Product[] memory) {
         if(!s_isAdmin[_adminAddress]) {
             revert ProductManagement__AddressIsNotAnAdmin();
@@ -166,6 +204,8 @@ contract ProductManagement is Restricted, PlatformEvents {
         return adminProducts;
     } 
 
+    /// @notice Retrieves all products on the platform.
+    /// @return Array of all Product structs in the platform.
     function getPlatformProducts() public view returns(Product[] memory) {
         return s_platformProducts;
     }
