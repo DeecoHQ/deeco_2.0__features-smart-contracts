@@ -2,9 +2,19 @@
 
 ## Core
 
-This contract serves as the main entry point of the platform, inheriting admin and access control features
+This contract serves as the main entry point of the platform, inheriting admin/access control features, and all of the other smart contracts - serving as a converging point
 
-_Inherits from `Restricted`, `EventsEmitter`, and `AdminManagement`. Initializes the master admin on deployment._
+_Inherits from `Auth`, `PlatformEvents`, and `AdminManagement`. Initializes the master admin on deployment._
+
+### contractName
+
+```solidity
+string contractName
+```
+
+Stores the name of the contract instance
+
+_Intended to be immutable but can't be due to non-value type restriction_
 
 ### constructor
 
@@ -26,23 +36,7 @@ _Sets up initial admin and emits deployment log. The `i_masterAdmin` is set in t
 
 Enables addition and removal of platform admins with event logging
 
-_Inherits access control from `Restricted` (via `Auth`) and event emitters from `EventsEmitter`_
-
-### AdminManagement__alreadyAddedAsAdmin
-
-```solidity
-error AdminManagement__alreadyAddedAsAdmin()
-```
-
-Error thrown when attempting to add an already existing admin
-
-### AdminManagement__userIsNotAnAdmin
-
-```solidity
-error AdminManagement__userIsNotAnAdmin()
-```
-
-Error thrown when attempting to remove a non-admin address
+_Inherits access control from `Auth` (via `Auth`) and event emitters from `EventsEmitter`_
 
 ### Admin
 
@@ -56,13 +50,31 @@ struct Admin {
 }
 ```
 
+### AdminManagement__AlreadyAddedAsAdmin
+
+```solidity
+error AdminManagement__AlreadyAddedAsAdmin(struct AdminManagement.Admin admin)
+```
+
+Error thrown when attempting to add an already existing admin
+
+### AdminManagement__AddressIsNotAnAdmin
+
+```solidity
+error AdminManagement__AddressIsNotAnAdmin()
+```
+
+Error thrown when a provided user(address) is not an admin
+
 ### s_platformAdmins
 
 ```solidity
 struct AdminManagement.Admin[] s_platformAdmins
 ```
 
-_Stores all platform admins added so far_
+Stores all platform admins added so far
+
+_This array grows as new admins are added and shrinks as they are removed._
 
 ### addAdmin
 
@@ -153,15 +165,39 @@ Checks whether an address is currently marked as an admin
 | ---- | ---- | ----------- |
 | [0] | bool | True if the address is an admin, false otherwise |
 
-## Restricted__accessDenied_AdminOnly
+### getAdminProfile
 
 ```solidity
-error Restricted__accessDenied_AdminOnly()
+function getAdminProfile(address _adminAddress) public view returns (struct AdminManagement.Admin)
+```
+
+Retrieves the full admin profile for a given address
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _adminAddress | address | The address of the admin whose profile you want |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | struct AdminManagement.Admin | An `Admin` struct containing the profile details |
+
+## Auth
+
+This contract provides admin-only access control functionality.
+
+_The master admin is set as an immutable address; additional admins can be added to the mapping._
+
+### Auth__AccessDenied_AdminOnly
+
+```solidity
+error Auth__AccessDenied_AdminOnly()
 ```
 
 Error thrown when a non-admin attempts to access a restricted function.
-
-## Restricted
 
 ### i_masterAdmin
 
@@ -171,13 +207,17 @@ address i_masterAdmin
 
 The address of the master admin, set at deployment and immutable.
 
+_This variable is used for strict ownership control and cannot be changed after deployment._
+
 ### s_isAdmin
 
 ```solidity
 mapping(address => bool) s_isAdmin
 ```
 
-A mapping of addresses that are granted admin rights.
+Mapping of admin addresses to their admin status.
+
+_`true` indicates the address has admin privileges; `false` means no admin rights._
 
 ### adminOnly
 
@@ -187,9 +227,171 @@ modifier adminOnly()
 
 Modifier that restricts function access to the master admin or approved admins.
 
-_Reverts with `Restricted__accessDenied_AdminOnly` if the caller is not authorized._
+_Reverts with `Auth__AccessDenied_AdminOnly` if the caller is not authorized._
 
-## EventsEmitter
+## ProductManagement
+
+Handles adding, updating, deleting, and retrieving product information within the platform.
+
+_Inherits from Auth for admin-only access and PlatformEvents for event emission._
+
+### Product
+
+Structure to store product details.
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+
+```solidity
+struct Product {
+  string id;
+  address addedBy;
+  uint256 addedAt;
+  string productImageCID;
+  string productMetadataCID;
+  uint256 updatedAt;
+}
+```
+
+### ProductManagement__ProductAlreadyExistsWithProvidedId
+
+```solidity
+error ProductManagement__ProductAlreadyExistsWithProvidedId(struct ProductManagement.Product product)
+```
+
+Error indicating that a product with the given ID already exists.
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| product | struct ProductManagement.Product | The full existing product data. |
+
+### ProductManagement__ProductWithProvidedIdDoesNotExist
+
+```solidity
+error ProductManagement__ProductWithProvidedIdDoesNotExist()
+```
+
+Error indicating that no product with the given ID exists.
+
+### ProductManagement__AddressIsNotAnAdmin
+
+```solidity
+error ProductManagement__AddressIsNotAnAdmin()
+```
+
+Error indicating that the provided address is not an admin.
+
+### addProduct
+
+```solidity
+function addProduct(string _productId, string _productImageCID, string _productMetadataCID) public
+```
+
+Adds a new product to the platform.
+
+_Only callable by an admin. Emits a ProductChore event on success._
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _productId | string | Unique identifier for the new product. |
+| _productImageCID | string | CID for the product image on IPFS. |
+| _productMetadataCID | string | CID for the product metadata on IPFS. |
+
+### deleteProduct
+
+```solidity
+function deleteProduct(string _productId) public
+```
+
+Deletes a product from the platform.
+
+_Only callable by an admin. Emits a ProductChore event on success._
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _productId | string | Unique identifier of the product to delete. |
+
+### updateProduct
+
+```solidity
+function updateProduct(string _productId, string _productImageCID, string _productMetadataCID) public
+```
+
+Updates details of an existing product.
+
+_Only callable by an admin. Emits a ProductChore event on success._
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _productId | string | Unique identifier of the product to update. |
+| _productImageCID | string | New CID for the product image on IPFS. |
+| _productMetadataCID | string | New CID for the product metadata on IPFS. |
+
+### getProduct
+
+```solidity
+function getProduct(string _productId) public view returns (struct ProductManagement.Product)
+```
+
+Retrieves details of a product by its ID.
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _productId | string | Unique identifier of the product to retrieve. |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | struct ProductManagement.Product | The Product struct containing product details. |
+
+### getProductsAddedByAdmin
+
+```solidity
+function getProductsAddedByAdmin(address _adminAddress) public view returns (struct ProductManagement.Product[])
+```
+
+Retrieves all products added by a specific admin.
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _adminAddress | address | Address of the admin. |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | struct ProductManagement.Product[] | Array of Product structs added by the given admin. |
+
+### getPlatformProducts
+
+```solidity
+function getPlatformProducts() public view returns (struct ProductManagement.Product[])
+```
+
+Retrieves all products on the platform.
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | struct ProductManagement.Product[] | Array of all Product structs in the platform. |
+
+## PlatformEvents
 
 This contract defines all the events for the project.
 
@@ -214,7 +416,7 @@ Emitted for general logging purposes.
 ### RemovedAdmin
 
 ```solidity
-event RemovedAdmin(string message, uint256 timestamp, string contractName, address removedAdminAddress)
+event RemovedAdmin(string message, uint256 timestamp, string contractName, address removedAdminAddress, address removedBy)
 ```
 
 Emitted when an admin is removed.
@@ -227,11 +429,12 @@ Emitted when an admin is removed.
 | timestamp | uint256 | The time the removal occurred. |
 | contractName | string | The name of the contract emitting the event. |
 | removedAdminAddress | address | The address of the admin that was removed. |
+| removedBy | address | The address of the account that performed the removal. |
 
 ### AddedNewAdmin
 
 ```solidity
-event AddedNewAdmin(string message, uint256 timestamp, string contractName, address addedAdminAddress)
+event AddedNewAdmin(string message, uint256 timestamp, string contractName, address addedAdminAddress, address addedBy)
 ```
 
 Emitted when a new admin is added.
@@ -244,38 +447,40 @@ Emitted when a new admin is added.
 | timestamp | uint256 | The time the new admin was added. |
 | contractName | string | The name of the contract emitting the event. |
 | addedAdminAddress | address | The address of the new admin that was added. |
+| addedBy | address | The address of the account that performed the addition. |
 
-## AggregatorV3Interface
+### ProductChoreActivityType
 
-### decimals
+Enumeration of product-related activity types.
 
-```solidity
-function decimals() external view returns (uint8)
-```
-
-### description
+_Used for categorizing `ProductChore` events._
 
 ```solidity
-function description() external view returns (string)
+enum ProductChoreActivityType {
+  AddedNewProduct,
+  UpdatedProduct,
+  DeletedProduct
+}
 ```
 
-### version
+### ProductChore
 
 ```solidity
-function version() external view returns (uint256)
+event ProductChore(string message, uint256 timestamp, enum PlatformEvents.ProductChoreActivityType activity, string contractName, string productId, address addedBy)
 ```
 
-### getRoundData
+Emitted when a product-related action occurs.
 
-```solidity
-function getRoundData(uint80 _roundId) external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
-```
+#### Parameters
 
-### latestRoundData
-
-```solidity
-function latestRoundData() external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
-```
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | string | A description of the action taken on the product. |
+| timestamp | uint256 | The time the action occurred. |
+| activity | enum PlatformEvents.ProductChoreActivityType | The type of product activity (add, update, delete). |
+| contractName | string | The name of the contract emitting the event. |
+| productId | string | The unique product identifier (string to support non-numeric DB IDs like MongoDB). |
+| addedBy | address | The address of the account that performed the product action. |
 
 ## EthUsdConverter
 
@@ -344,4 +549,92 @@ _Input ETH amount must be in 18 decimal format (e.g. 2.5 ETH = 25000000000000000
 | ---- | ---- | ----------- |
 | [0] | uint256 | standardUnitPrice The equivalent USD value in 18 decimal format |
 | [1] | uint256 | readablePrice The equivalent USD value as a whole number (no decimals) |
+
+## AggregatorV3Interface
+
+### decimals
+
+```solidity
+function decimals() external view returns (uint8)
+```
+
+### description
+
+```solidity
+function description() external view returns (string)
+```
+
+### version
+
+```solidity
+function version() external view returns (uint256)
+```
+
+### getRoundData
+
+```solidity
+function getRoundData(uint80 _roundId) external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
+```
+
+### latestRoundData
+
+```solidity
+function latestRoundData() external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
+```
+
+## EventsEmitter
+
+This contract defines all the events for the project.
+
+_Events can be inherited and emitted by other contracts for standardized logging._
+
+### Logs
+
+```solidity
+event Logs(string message, uint256 timestamp, string contractName)
+```
+
+Emitted for general logging purposes.
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | string | A custom message describing the log. |
+| timestamp | uint256 | The timestamp when the log was emitted. |
+| contractName | string | The name of the contract emitting the log. |
+
+### RemovedAdmin
+
+```solidity
+event RemovedAdmin(string message, uint256 timestamp, string contractName, address removedAdminAddress)
+```
+
+Emitted when an admin is removed.
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | string | A description of the removal action. |
+| timestamp | uint256 | The time the removal occurred. |
+| contractName | string | The name of the contract emitting the event. |
+| removedAdminAddress | address | The address of the admin that was removed. |
+
+### AddedNewAdmin
+
+```solidity
+event AddedNewAdmin(string message, uint256 timestamp, string contractName, address addedAdminAddress)
+```
+
+Emitted when a new admin is added.
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | string | A description of the addition action. |
+| timestamp | uint256 | The time the new admin was added. |
+| contractName | string | The name of the contract emitting the event. |
+| addedAdminAddress | address | The address of the new admin that was added. |
 
