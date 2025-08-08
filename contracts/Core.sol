@@ -8,7 +8,7 @@ import "./domains/product/ProductManagement.sol";
 
 /// @title Core Contract Entry Point for Platform Functionality
 /// @author @Okpainmo(Github)
-/// @notice This contract serves as the main entry point of the platform, inheriting admin and access control features
+/// @notice This contract serves as the main entry point of the platform, inheriting admin/access control features, and all of the other smart contracts - serving as a converging point
 /// @dev Inherits from `Auth`, `PlatformEvents`, and `AdminManagement`. Initializes the master admin on deployment.
 contract Core is Auth, PlatformEvents, AdminManagement, ProductManagement {
     /// @notice Stores the name of the contract instance
