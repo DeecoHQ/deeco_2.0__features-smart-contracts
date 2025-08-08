@@ -14,6 +14,10 @@ This repository contains the smart-contract architecture and implementation for 
 
 **N.B: Token support to include both native chain tokens and USDT wherever possible.**
 
+## Features/Deliverables.
+
+...
+
 ## Setting up for local interaction and development.
 
 1. Clone the project's Github repo.
@@ -29,10 +33,6 @@ npm install
 ```
 
 3. Proceed to interact with the smart-contracts using the relevant command from the 'Important Commands' list below.
-
-## Features/Deliverables.
-
-...
 
 ## Important commands.
 
@@ -62,7 +62,7 @@ Runs all tests. It also triggers the gas report output, hence you should be caut
 
 6. `npx hardhat coverage`
 
-Checks for test coverage. Ensure to add the "solidity coverage import to your hardhat config file(`import solidity-coverage`) - already added on this template.
+Checks for test coverage. Ensure to add the "solidity coverage import to your hardhat config file(`import solidity-coverage`) - already added.
 
 7. `npm run lint`
 
