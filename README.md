@@ -74,42 +74,68 @@ Generates markdown documentations(using Natspec comments that has been added to 
 
 ## Smart Contract Architecture And Documentation.
 
-### 1. Project Structure/Architecture.
+### 1. General Contract Structure/Architecture.
 
 The project is a carefully thought-out one. Planning commenced with chores like domain derivations, chain selection, and creating mental models(sketches) for the smart contract flows/implementations.
 
-The project is built to be highly composable, flexible, and maintainable - with all the various domains coming together inside the main(`Core.sol`) smart contract.
+The project is built to be highly composable, flexible, and maintainable - with all the various domains coming together inside their respective domain-core smart contracts.
 
 This diagram below details the project's plan and architecture.
 
-![Screenshot](<./public/Screenshot%20(1306).png>)
+![Screenshot](<./public/Screenshot%20(1312).png>)
 
 ### 2. Contracts(in-progress).
 
 ```plaintext
 contracts
 │ 
-├── lib
-│   └── EventsEmitter.sol
-│   └── EthUsdConverter.sol
-│ 
-├── auth
-│   └── Auth.sol
-│   
-├── admin-management
-│   └── AdminManagement.sol
-│   
-├── product
-│    └── ProductManagement.sol
-│   
-└── Core.sol
+├── domains
+│    ├── auth
+│    │    └── AdminAuth.sol
+│    │    └── MerchantAuth.sol
+│    │    └── OnlyOwnerAuth.sol
+│    │    └── ProductManagementAuth.sol
+│    │ 
+│    ├── admin-management
+│    │    └── AdminManagement.sol
+│    │    └── MerchantManagement.sol
+│    │ 
+│    ├── product
+│    │    └── ProductManagement.sol
+│    │
+│    ├── order-payments
+│    │    └── OrderPayment__ERC20.sol
+│    │    └── OrderPayment__Native.sol
+│    │
+│    ├── payouts
+│    │    └── Payouts__ERC20.sol
+│    │    └── Payouts__Native.sol
+│    │ 
+│    └── withdrawals
+│         └── Withdrawals__ERC20.sol
+│         └── Withdrawals__Native.sol
+│      
+├── core
+│    └── Core__AdminManagement.sol
+│    └── Core__ProductManagement.sol
+│    └── Core__Liquidity.sol
+│
+└── lib
+     └── PlatformEvents.sol
+     └── EthUsdConverter.sol
 ```
 
 ### 2. Contracts Documentations(in-progress).
 
-Contracts documentation is properly handled thanks to intensive Natspec usage, and OpenZeppelin's 'solidity-docgen' library. Follow this link to [view the general contracts documentation](https://github.com/Okpainmo/deeco-2.0__smart-contracts/tree/main/docs).
+Contracts documentation is properly handled thanks to intensive Natspec usage, and OpenZeppelin's 'solidity-docgen' library. Follow this link to [view the general contracts documentation](https://github.com/Okpainmo/deeco-2.0__smart-contracts/blob/main/docs/index.md).
 
 > The docs will keep getting updated as the project progresses. To regenerate the [up-to-date] docs at any point, simply run `npx hardhat docgen`
+
+## Liquidity Flow Diagram.
+
+...
+
+
 
 
 
