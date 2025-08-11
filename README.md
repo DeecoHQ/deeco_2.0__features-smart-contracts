@@ -4,7 +4,11 @@ Deeco is an onchain(blockchain) e-commerce project. In simple terms, it is a pro
 
 This repository contains the smart-contract architecture and implementation for the project. Use this link to [view the architectural modelling of the project, and the smart contract documentations](https://github.com/Okpainmo/deeco-2.0__smart-contracts?tab=readme-ov-file#smart-contract-architecture-and-documentation).
 
-## Supported/Token Chains.
+**License is MIT.**
+
+> Have an e-commerce platform and want to take it on-chain, code is open-source, and usage is free.
+
+## Supported/Token Chains(in progress...).
 
 1. Ethereum(Ethereum Core).
 2. Base.
@@ -12,7 +16,7 @@ This repository contains the smart-contract architecture and implementation for 
 4. Binance Smart Chain.
 5. Arbitrum.
 
-**N.B: Token support to include both native chain tokens and USDT wherever possible.**
+**N.B: Token support to include both native chain-tokens and USDT wherever possible.**
 
 ## Features/Deliverables.
 
@@ -84,7 +88,7 @@ This diagram below details the project's plan and architecture.
 
 ![Screenshot](<./public/Screenshot%20(1313).png>)
 
-### 2. Contracts(in-progress).
+### 2. Contracts(in progress...).
 
 ```plaintext
 contracts
@@ -125,7 +129,7 @@ contracts
      └── EthUsdConverter.sol
 ```
 
-### 2. Contracts Documentations(in-progress).
+### 2. Contracts Documentations(in progress...).
 
 Contracts documentation is properly handled thanks to intensive Natspec usage, and OpenZeppelin's 'solidity-docgen' library. Follow this link to [view the general contracts documentation](https://github.com/Okpainmo/deeco-2.0__smart-contracts/blob/main/docs/index.md).
 
