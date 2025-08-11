@@ -88,18 +88,18 @@ This diagram below details the project's plan and architecture.
 
 ```plaintext
 contracts
-│ 
+│
 ├── domains
 │    ├── auth
 │    │    └── AdminAuth.sol
 │    │    └── MerchantAuth.sol
 │    │    └── OnlyOwnerAuth.sol
 │    │    └── ProductManagementAuth.sol
-│    │ 
+│    │
 │    ├── admin-management
 │    │    └── AdminManagement.sol
 │    │    └── MerchantManagement.sol
-│    │ 
+│    │
 │    ├── product
 │    │    └── ProductManagement.sol
 │    │
@@ -110,11 +110,11 @@ contracts
 │    ├── payouts
 │    │    └── Payouts__ERC20.sol
 │    │    └── Payouts__Native.sol
-│    │ 
+│    │
 │    └── withdrawals
 │         └── Withdrawals__ERC20.sol
 │         └── Withdrawals__Native.sol
-│      
+│
 ├── core
 │    └── Core__AdminManagement.sol
 │    └── Core__ProductManagement.sol
@@ -134,11 +134,3 @@ Contracts documentation is properly handled thanks to intensive Natspec usage, a
 ## Liquidity Flow Diagram.
 
 ...
-
-
-
-
-
-
-
-
