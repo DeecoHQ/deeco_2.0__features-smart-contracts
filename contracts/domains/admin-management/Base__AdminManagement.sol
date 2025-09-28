@@ -4,7 +4,7 @@ pragma solidity >=0.8.2 <0.9.0;
 import "../auth/AdminAuth.sol";
 import "../../lib/PlatformEvents.sol";
 
-contract AdminManagement is AdminAuth, PlatformEvents {
+contract Base__AdminManagement is AdminAuth, PlatformEvents {
     struct Admin {
         address adminAddress;
         address addedBy;

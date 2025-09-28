@@ -5,7 +5,7 @@ import "../auth/AdminAuth.sol";
 import "../auth/MerchantAuth.sol";
 import "../../lib/PlatformEvents.sol";
 
-contract MerchantManagement is AdminAuth, MerchantAuth, PlatformEvents {
+contract Base__MerchantManagement is AdminAuth, MerchantAuth, PlatformEvents {
 
     struct Merchant {
         address merchantId;
@@ -20,6 +20,8 @@ contract MerchantManagement is AdminAuth, MerchantAuth, PlatformEvents {
 
     error MerchantManagement__ApprovedOperatorsOnly();
 
+    error MerchantManagement__ZeroAddressError();
+
     Merchant[] internal s_platformMerchants;
 
     mapping(address => Merchant[]) internal s_adminAddressToAdditions_merchants;
@@ -29,6 +31,8 @@ contract MerchantManagement is AdminAuth, MerchantAuth, PlatformEvents {
     string private constant CURRENT_CONTRACT_NAME = "MerchantManagement"; // keep name in one variable to avoid mispelling it at any point 
 
     address internal s_liquidityCoreContractAddress;
+
+    address internal s_merchantPayoutAddress;
 
     function addMerchant(address _merchantId) public adminOnly {
         if (s_isMerchant[_merchantId]) {
@@ -157,6 +161,18 @@ contract MerchantManagement is AdminAuth, MerchantAuth, PlatformEvents {
 
     function getPlatformMerchants() public view returns (Merchant[] memory) {
         return s_platformMerchants;
+    }
+
+    function getMerchantPayoutAddress() public view returns (address) {
+        return s_merchantPayoutAddress;
+    }
+    
+    function setMerchantPayoutAddress(address _address) public {
+        if (_address == address(0)) {
+            revert MerchantManagement__ZeroAddressError();
+        }
+
+        s_merchantPayoutAddress = _address;
     }
 
     function getAdminMerchantRegistrations(
