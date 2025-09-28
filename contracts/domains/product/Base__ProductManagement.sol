@@ -4,6 +4,7 @@ pragma solidity >=0.8.2 <0.9.0;
 import "../../lib/PlatformEvents.sol";
 import "../auth/OnlyOwnerAuth.sol";
 import "../auth/ProductManagementAuth.sol";
+import "../../interfaces/IAdminManagement__Base.sol";
 
 contract ProductManagement is ProductManagementAuth, PlatformEvents {
 
@@ -37,6 +38,8 @@ contract ProductManagement is ProductManagementAuth, PlatformEvents {
 
     string private constant CURRENT_CONTRACT_NAME = "ProductManagement"; // keep name in one variable to avoid mispelling it at any point
 
+    uint256 s_ledgerIdTracker = 0;
+
     function addProduct(
         string memory _productId,
         string memory _productImageCID,
@@ -52,7 +55,7 @@ contract ProductManagement is ProductManagementAuth, PlatformEvents {
         }
 
         // Core__AdminManagement(interface) - from the externally deployed 'Core__AdminManagement' contract
-        if(!Core__AdminManagement(s_adminManagementCoreContractAddress).checkIsMerchant(_merchantId)) {
+        if(!s_merchantManagementContract__Base.checkIsMerchant(_merchantId)) {
             revert ProductManagement__MerchantDoesNotExist();
         }
 
@@ -214,7 +217,7 @@ contract ProductManagement is ProductManagementAuth, PlatformEvents {
 
     function getProductsAddedByAdmin(address _adminAddress) public view returns(Product[] memory) {
         // Core__AdminManagement(interface) - from ProductManagementAuth.sol
-        if(!Core__AdminManagement(s_adminManagementCoreContractAddress).checkIsAdmin(_adminAddress)) {
+        if(!s_adminManagementContract__Base.checkIsAdmin(_adminAddress)) {
             revert ProductManagement__AddressIsNotAnAdmin();
         }
         return s_adminAddressToProductsAdded[_adminAddress];
