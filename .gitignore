@@ -19,7 +19,15 @@ ignition/deployments/chain-31337
 # deployments
 # ignition/deployments
 
+
+# IDE
+.vscode
+.wake
+
 # Remix IDE additions
 contracts/.states
 contracts/artifacts
 contracts/.deps
+
+# others
+bash.exe.stackdump
