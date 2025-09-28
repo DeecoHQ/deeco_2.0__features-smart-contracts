@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.2 <0.9.0;
-
-// import the core admin management(admin and merchant management) contract inteface
-import "../../core/Core__AdminManagement.sol";
+import "../../interfaces/IAdminManagement__Base.sol";
+import "../../interfaces/IMerchantManagement__Base.sol";
 
 contract ProductManagementAuth {
     error ProductManagementAuth__AccessDenied_VerifiedAdminsOnly();
@@ -10,18 +9,20 @@ contract ProductManagementAuth {
     address internal immutable i_owner;
 
     address internal s_adminManagementCoreContractAddress;
+    address internal s_merchantManagementCoreContractAddress;
 
     IAdminManagement__Base internal s_adminManagementContract__Base =
     IAdminManagement__Base(s_adminManagementCoreContractAddress);
 
+    IMerchantManagement__Base internal s_merchantManagementContract__Base =
+    IMerchantManagement__Base(s_merchantManagementCoreContractAddress);
+
     modifier onlyVerifiedProductManager(address _address) {
-        // Core__AdminManagement(interface) - from the externally deployed 'Core__AdminManagement' contract
+        // IAdminManagement__Base(interface) - from the externally deployed Admin Management contract
         if (
             _address != i_owner &&
-            !Core__AdminManagement(s_adminManagementCoreContractAddress)
-                .checkIsAdmin(_address) &&
-            !Core__AdminManagement(s_adminManagementCoreContractAddress)
-                .checkIsMerchant(_address)
+            !s_adminManagementContract__Base.checkIsAdmin(_address) &&
+            !s_merchantManagementContract__Base.checkIsMerchant(_address)
         ) {
             revert ProductManagementAuth__AccessDenied_VerifiedAdminsOnly();
         }
