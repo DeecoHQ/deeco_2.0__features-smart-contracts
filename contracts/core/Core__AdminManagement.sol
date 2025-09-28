@@ -3,14 +3,14 @@ pragma solidity >=0.8.2 <0.9.0;
 
 import "../lib/PlatformEvents.sol";
 import "../domains/auth/OnlyOwnerAuth.sol";
-import "../domains/admin-management/AdminManagement.sol";
-import "../domains/admin-management/MerchantManagement.sol";
+import "../domains/admin-management/Base__AdminManagement.sol";
+import "../domains/admin-management/Base__MerchantManagement.sol";
 
 contract Core__AdminManagement is
     OnlyOwnerAuth,
     PlatformEvents,
-    AdminManagement,
-    MerchantManagement
+    Base__AdminManagement,
+    Base__MerchantManagement
 {
     string private constant CONTRACT_NAME = "Core__AdminManagement"; // set in one place to avoid mispelling elsewhere
 
@@ -98,27 +98,27 @@ contract Core__AdminManagement is
         );
     }
 
-    function updateLiquidityCoreContractAddress(
-        address _contractAddress
-    ) public adminOnly {
-        // s_liquidityCoreContractAddress(variable) - from MerchantManagement.sol
-        s_liquidityCoreContractAddress = _contractAddress;
+    // function updateLiquidityCoreContractAddress(
+    //     address _contractAddress
+    // ) public adminOnly {
+    //     // s_liquidityCoreContractAddress(variable) - from MerchantManagement.sol
+    //     s_liquidityCoreContractAddress = _contractAddress;
 
-        emit ExternalContractAddressUpdated(
-            "Core____AdminManagement contract address updated successfully",
-            block.timestamp,
-            CONTRACT_NAME,
-            address(this),
-            "Core____AdminManagement",
-            _contractAddress,
-            msg.sender
-        );
-    }
+    //     emit ExternalContractAddressUpdated(
+    //         "Core____AdminManagement contract address updated successfully",
+    //         block.timestamp,
+    //         CONTRACT_NAME,
+    //         address(this),
+    //         "Core____AdminManagement",
+    //         _contractAddress,
+    //         msg.sender
+    //     );
+    // }
 
-    function getLiquidityCoreContractAddress() public view returns (address) {
-        // s_liquidityCoreContractAddress(variable) - from MerchantManagement.sol
-        return s_liquidityCoreContractAddress;
-    }
+    // function getLiquidityCoreContractAddress() public view returns (address) {
+    //     // s_liquidityCoreContractAddress(variable) - from MerchantManagement.sol
+    //     return s_liquidityCoreContractAddress;
+    // }
 
     function getContractName() public pure returns (string memory) {
         return CONTRACT_NAME;
